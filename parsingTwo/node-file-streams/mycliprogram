@@ -46,10 +46,10 @@ switch (commands.indexOf(command)) {
     read(args[3]);
     break;
   case 1:
-    console.log("commad is write");
+    write(args[3]);
     break;
   case 2:
-    console.log("command is copy");
+    copy(args[3]);
     break;
   case 3:
     console.log("command is reverse");
@@ -111,5 +111,20 @@ function write(filePath) {
     setTimeout(() => {
       process.exit(0);
     }, 100);
+  });
+}
+
+function copy(filePath) {
+  const inputStream = fs.createReadStream(filePath);
+  const fileCopyPath =
+    filePath.split(".")[0] + "-copy." + filePath.split(".")[1];
+  const outputStream = fs.createWriteStream(fileCopyPath);
+
+  inputStream.pipe(outputStream);
+
+  outputStream.on("finish", () => {
+    console.log(
+      `You have succesfully created a ${filePath} copy. The new file name is ${fileCopyPath}`
+    );
   });
 }
