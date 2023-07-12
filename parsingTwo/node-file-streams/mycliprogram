@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const args = process.argv;
-const commands = ['read', 'write', 'copy', 'reverse'];
+const commands = ["read", "write", "copy", "reverse"];
 
-const getHelpText = function() {
-    const helpText = `
+const getHelpText = function () {
+  const helpText = `
     simplecli is a simple cli program to demonstrate how to handle files using streams.
     usage:
         mycliprogram <command> <path_to_file>
@@ -17,27 +17,44 @@ const getHelpText = function() {
 
         <path_to_file> is the path to the file you want to work with.
     `;
-    console.log(helpText)
+  console.log(helpText);
+};
+
+let command = "";
+
+if (args.length < 3) {
+  getHelpText();
+  return;
+} else if (args.length > 4) {
+  console.log("More arguments provided than expected");
+  getHelpText();
+  return;
+} else {
+  command = args[2];
+  if (!args[3]) {
+    console.log("This tool requires at least one path to a file");
+    getHelpText();
+    return;
+  }
 }
 
-let command = '';
-
-if(args.length < 3) {
+switch (commands.indexOf(command)) {
+  case 0:
+    console.log("command is read");
+    break;
+  case 1:
+    console.log("commad is write");
+    break;
+  case 2:
+    console.log("command is copy");
+    break;
+  case 3:
+    console.log("command is reverse");
+    break;
+  default:
+    console.log(
+      "You entered a wrong command. See help text below for supported functions"
+    );
     getHelpText();
     return;
 }
-else if(args.length > 4) {
-    console.log('More arguments provided than expected');
-    getHelpText();
-    return;
-}
-else {
-    command = args[2]
-    if(!args[3]) {
-        console.log('This tool requires at least one path to a file');
-        getHelpText();
-        return;
-    }
-}
-
-
