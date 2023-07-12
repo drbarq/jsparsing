@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+const fs = require("fs");
+const readline = require("readline");
+
 const args = process.argv;
 const commands = ["read", "write", "copy", "reverse"];
 
@@ -40,7 +43,7 @@ if (args.length < 3) {
 
 switch (commands.indexOf(command)) {
   case 0:
-    console.log("command is read");
+    read(args[3]);
     break;
   case 1:
     console.log("commad is write");
@@ -57,4 +60,56 @@ switch (commands.indexOf(command)) {
     );
     getHelpText();
     return;
+}
+
+function read(filePath) {
+  const readableStream = fs.createReadStream(filePath, "utf8");
+
+  readableStream.on("error", function (error) {
+    console.log(`error: ${error.message}`);
+  });
+
+  readableStream.on("data", (chunk) => {
+    console.log(chunk);
+  });
+}
+
+function write(filePath) {
+  const writeableStream = fs.createWriteStream(filePath);
+
+  writeableStream.on("error", (error) => {
+    console.log(
+      `An error occured while writing to the file. Error: ${error.message}`
+    );
+  });
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: "Enter a sentence:",
+  });
+
+  rl.prompt();
+
+  rl.on("line", (line) => {
+    console.log(`line: ${line}`);
+    switch (line.trim()) {
+      case "exit":
+        rl.close();
+        break;
+      default:
+        sentence = line + "\n";
+        writeableStream.write(sentence);
+        rl.prompt();
+        break;
+    }
+  }).on("close", () => {
+    writeableStream.end();
+    writeableStream.on("finish", () => {
+      console.log(`All your sentences have been written to ${filePath}`);
+    });
+    setTimeout(() => {
+      process.exit(0);
+    }, 100);
+  });
 }
