@@ -5,6 +5,8 @@ const readline = require("readline");
 
 const args = process.argv;
 const commands = ["read", "write", "copy", "reverse"];
+const stream = require("stream");
+const Transform = stream.Transform || require("readable-stream").Transform;
 
 const getHelpText = function () {
   const helpText = `
@@ -127,4 +129,28 @@ function copy(filePath) {
       `You have succesfully created a ${filePath} copy. The new file name is ${fileCopyPath}`
     );
   });
+}
+
+function reverse(filePath) {
+  const readStream = fs.createReadStream(filePath);
+  const reversedDataFilePath =
+    filePath.split(".")[0] + "-reversed" + filePath.split(".")[1];
+  const writeStream = fs.createWriteStream(reversedDataFilePath);
+
+  const reverseStream = new Transform({
+    transform(data, encoding, callback) {
+      const reversedData = data.toString().split("").reverse().join("");
+      this.push(reversedData);
+      callback();
+    },
+  });
+
+  readStream
+    .pipe(reverseSteam)
+    .pipe(writeStream)
+    .on("finish", () => {
+      console.log(
+        `Finished reversing the contents of ${filePath} and saving the output to ${reversedDataFilePath}`
+      );
+    });
 }
