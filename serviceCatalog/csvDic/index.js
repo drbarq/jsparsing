@@ -2,16 +2,19 @@ const csv = require("csv-parser");
 const fs = require("fs");
 
 function csvToDictionary(csvFilePath, callback) {
-  const dictionary = {};
-
+  var dictionary = {};
+  let rowIndex = 1;
   fs.createReadStream(csvFilePath)
     .pipe(csv())
     .on("data", (data) => {
-      //   console.log(data, "data");
-      const key = data["Key"];
-      const value = data["Value"];
-
-      dictionary[key] = value;
+      const key = `row_${rowIndex}`; // Generate a unique identifier based on row number
+      dictionary[key] = data;
+      rowIndex++;
+      for (var key2 in data) {
+        value = data[key2];
+        console.log(value, "value");
+        dictionary[key] = data;
+      }
     })
     .on("end", () => {
       callback(null, dictionary);
@@ -19,12 +22,10 @@ function csvToDictionary(csvFilePath, callback) {
     .on("error", (error) => {
       callback(error);
     });
-
-  console.log(dictionary, "dictionary");
 }
 
 // Usage:
-const csvFilePath = "./migration_data.csv";
+const csvFilePath = "./migration.csv";
 
 csvToDictionary(csvFilePath, (error, dictionary) => {
   if (error) {
@@ -33,4 +34,5 @@ csvToDictionary(csvFilePath, (error, dictionary) => {
   }
 
   console.log("Dictionary:", dictionary);
+  //   return;
 });
