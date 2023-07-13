@@ -53,18 +53,36 @@ const serviceCatalog = {
   },
 };
 
-function traverseObject(sc) {
-  for (let key in sc) {
-    if (typeof sc[key] === "object" && sc[key] !== null) {
-      traverseObject(sc[key]);
+// function traverseObject(sc) {
+//   for (let key in sc) {
+//     if (typeof sc[key] === "object" && sc[key] !== null) {
+//       traverseObject(sc[key]);
+//     } else {
+//       console.log(`Key: ${key}`);
+//       console.log(`Value: ${sc[key]}`);
+//     }
+//   }
+// }
+
+function traverseObject(obj, path = "") {
+  const result = [];
+  for (let key in obj) {
+    const value = obj[key];
+    const currentPath = path ? `${path}.${key}` : key;
+
+    if (typeof value === "object" && value !== null) {
+      result.push({ path: currentPath, value });
+      result.push(...traverseObject(value, currentPath));
     } else {
-      console.log(`Key: ${key}`);
-      console.log(`Value: ${sc[key]}`);
+      result.push({ path: currentPath, value });
     }
   }
+  return result;
 }
 
-traverseObject(serviceCatalog);
+let sc = traverseObject(serviceCatalog);
+
+console.log(sc);
 
 // Example usage:
 // console.log(serviceCatalog.userService.name); // Output: "User Service"
