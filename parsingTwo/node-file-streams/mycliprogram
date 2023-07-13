@@ -54,7 +54,7 @@ switch (commands.indexOf(command)) {
     copy(args[3]);
     break;
   case 3:
-    console.log("command is reverse");
+    reverse(args[3]);
     break;
   default:
     console.log(
@@ -134,19 +134,20 @@ function copy(filePath) {
 function reverse(filePath) {
   const readStream = fs.createReadStream(filePath);
   const reversedDataFilePath =
-    filePath.split(".")[0] + "-reversed" + filePath.split(".")[1];
+    filePath.split(".")[0] + "-reversed." + filePath.split(".")[1];
   const writeStream = fs.createWriteStream(reversedDataFilePath);
 
   const reverseStream = new Transform({
     transform(data, encoding, callback) {
       const reversedData = data.toString().split("").reverse().join("");
+      //   const reversedData2 = data.toString().split("").reverse().join("1");
       this.push(reversedData);
       callback();
     },
   });
 
   readStream
-    .pipe(reverseSteam)
+    .pipe(reverseStream)
     .pipe(writeStream)
     .on("finish", () => {
       console.log(
