@@ -62,4 +62,30 @@ const csvFilePath = "./migration.csv";
 //   return dictionary;
 // });
 
+// function findEntriesWithValue(dictionary, property_name, value, callback) {
+//   console.log(dictionary, "dictionay ");
+//   const result = {};
+//   for (const key in dictionary) {
+//     if (
+//       dictionary.hasOwnProperty(key) &&
+//       dictionary[key][property_name] === value
+//     ) {
+//       result[key] = dictionary[key];
+//     }
+//   }
+//   callback(result);
+// }
+
+// findEntriesWithValue(
+//   localCsvToDictionary(csvFilePath),
+//   "sex",
+//   "Female",
+//   function (result) {
+//     console.log(result, "result");
+//     for (const key in result) {
+//       console.log(key + ": ", result[key]);
+//     }
+//   }
+// );
+
 export default csvToDictionary;
