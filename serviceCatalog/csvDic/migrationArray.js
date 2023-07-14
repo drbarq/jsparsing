@@ -1,5 +1,5 @@
-const csv = require("csv-parser");
-const fs = require("fs");
+import csv from "csv-parser";
+import fs from "fs";
 
 function csvToArray(csvFilePath, callback) {
   var migrationArray = [];
@@ -23,7 +23,8 @@ csvToArray(csvFilePath, (error, array) => {
     console.error("Error:", error);
     return;
   }
-  console.log("array:", array[6]);
+  //   console.log("array:", array);
+  return array;
 });
 
 export default csvToArray;
