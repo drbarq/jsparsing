@@ -1,7 +1,7 @@
 const csvFilePath = "./migration.csv";
 import csvToDictionary from "./index.js";
 
-function localCsvToDictionary(path) {
+function localCsvToDictionary(path, property_name, value) {
   return new Promise((resolve, reject) => {
     csvToDictionary(path, (error, dictionary) => {
       if (error) {
@@ -10,8 +10,9 @@ function localCsvToDictionary(path) {
         return;
       }
 
-      let result = findEntriesWithValue(dictionary, "sex", "male");
-      console.log(typeof result);
+      //   let result = findEntriesWithValue(dictionary, "sex", "male");
+      let result = findEntriesWithValue(dictionary, property_name, value);
+      //   console.log(typeof result);
       if (typeof result === "string") {
         resolve("no values found");
       }
@@ -37,11 +38,18 @@ function findEntriesWithValue(dictionary, property_name, value) {
   return result;
 }
 
-(async () => {
+async function findEntriesInObj(value, property_name) {
   try {
-    let searchResults = await localCsvToDictionary(csvFilePath);
-    console.log("searchResults: ", searchResults);
+    let searchResults = await localCsvToDictionary(
+      csvFilePath,
+      value,
+      property_name
+    );
+    // console.log("searchResults: ", searchResults);
+    return `searchResults: ${searchResults}`;
   } catch (error) {
     console.error("Error", error);
   }
-})();
+}
+
+console.log(await findEntriesInObj("sex", "male"));
