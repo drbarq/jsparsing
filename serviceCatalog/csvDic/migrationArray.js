@@ -25,3 +25,5 @@ csvToArray(csvFilePath, (error, array) => {
   }
   console.log("array:", array[6]);
 });
+
+export default csvToArray;

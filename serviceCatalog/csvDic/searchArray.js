@@ -1,4 +1,6 @@
 const csv = require("csv-parser");
 const fs = require("fs");
 
-import { csvToDictionary } from "./index.js";
+import csvToArray from "./migrationArray.js";
+
+// pull in the array
