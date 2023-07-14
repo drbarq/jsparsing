@@ -40,7 +40,6 @@ const csvFilePath = "./migration2.csv";
 
 // everytime it will convert the csv to array, then search it
 
-// function localCsvToArray(path, property_name, value) {
 function localCsvToArray(csvFilePath, property_name, value) {
   return new Promise((resolve, reject) => {
     csvToArray(csvFilePath, (error, array) => {
@@ -66,8 +65,6 @@ function findInArray(array, property_name, value) {
     }
   });
 }
-
-// localCsvToArray(csvFilePath, "sex", "Female");
 
 async function returnArray(csvFilePath, property_name, value) {
   try {
